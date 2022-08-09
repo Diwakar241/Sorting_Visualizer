@@ -1,7 +1,7 @@
 const container = document.querySelector(".data-container");
 
 // function to generate bars
-function generatebars(num = 20) {
+function generatebars(num = 10) {
 
 //for loop to generate 20 bars
 for (let i = 0; i < num; i += 1) {
