@@ -62,7 +62,7 @@ for (var i = 0; i < bars.length; i += 1) {
 	await new Promise((resolve) =>
 		setTimeout(() => {
 		resolve();
-  }, 100)
+  }, 300)
 	);
 
 	// To store the integer value of jth bar to var1
@@ -98,7 +98,7 @@ for (var i = 0; i < bars.length; i += 1) {
 	await new Promise((resolve) =>
 	setTimeout(() => {
 		resolve();
-	}, 100)
+	}, 300)
 	);
 
 	// Provide skyblue color to the (min-idx)th bar
@@ -137,19 +137,19 @@ for(var i=0;i<bars.length-1;i++){
   for(var j=0;j<bars.length-1-i;j++){
     // Provide darkblue color to the jth bar
     bars[j].style.backgroundColor = "darkblue";
-    // To pause the execution of code for 50 milliseconds
+    // To pause the execution of code for 300 milliseconds
     await new Promise((resolve) =>
   		setTimeout(() => {
   		resolve();
-    },50)
+    },300)
   	);
     // Provide red color to the (j+1)th bar
     bars[j+1].style.backgroundColor = "red";
-    // To pause the execution of code for 50 milliseconds
+    // To pause the execution of code for 300 milliseconds
     await new Promise((resolve) =>
   		setTimeout(() => {
   		resolve();
-    },50)
+    },300)
   	);
     // To store the integer value of jth bar to var1
     var val1 = parseInt(bars[j].childNodes[0].innerHTML);
@@ -165,11 +165,11 @@ for(var i=0;i<bars.length-1;i++){
     	bars[j].childNodes[0].innerText = bars[j+1].childNodes[0].innerText;
     	bars[j+1].childNodes[0].innerText = temp2;
     }
-    // To pause the execution of code for 100 milliseconds
+    // To pause the execution of code for 300 milliseconds
     await new Promise((resolve) =>
   		setTimeout(() => {
   		resolve();
-    }, 100)
+    }, 300)
   	);
     // Provide skyblue color to the (j)th bar
     bars[j].style.backgroundColor = " rgb(24, 190, 255)";
