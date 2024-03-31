@@ -1,5 +1,5 @@
 // Table.js
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Table.css";
@@ -13,12 +13,35 @@ function Table() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [formData, setFormData] = useState({ binValue: "", extprocessor: "", throttlingPercentage: "" });
   const [showFormFields, setShowFormFields] = useState(false);
+
+ //pagination logic 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage =10; // Number of items per page
  
+  useEffect(() => {
+    fetchData();
+  },[currentPage]); // Fetch data whenever currentPage changes
+ 
+  const fetchData = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/users/binRouting',formData, {
+        params:{
+          page:currentPage,
+          size: itemsPerPage
+        }
+      });
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+//end
   const toggleFormFields = () => {
     setShowFormFields(true);
   };
 
   function refreshPage() {
+    setFormData({ binValue: "", extprocessor: "", throttlingPercentage: "" });
     window.location.reload(false);
   }
  
@@ -34,14 +57,18 @@ function Table() {
     setEditableRows(false)
     e.preventDefault();
     try {
-      const response= await axios.post('http://localhost:8080/api/users/binRouting',formData);
+      const response= await axios.post('http://localhost:8080/api/users/binRouting',formData,{
+        params:{
+          page:currentPage,
+          size: itemsPerPage
+        }});
       // Simulating a POST request with formData
         // Simulated response from the POST API
       // Update data with response
       console.log("response.data"+response.data);
       setData(response.data);
       // Reset form data
-      setFormData({ binValue: "", extprocessor: "", throttlingPercentage: "" });
+    //  setFormData({ binValue: "", extprocessor: "", throttlingPercentage: "" });
       // Hide form fields
       setShowFormFields(false);
     } catch (error) {
@@ -78,6 +105,8 @@ function Table() {
       console.error('Error updating data:', error);
     }
   };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
  
   return (
     <>
@@ -135,7 +164,7 @@ function Table() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {(data.content || data).map((item, index) => (
                 <tr key={index}>
                   <td>
                     {editableRows[index] ? (
@@ -192,6 +221,18 @@ function Table() {
               ))}
             </tbody>
           </table>
+          <div className="pagination">
+          <ul>
+            {data.totalElements > itemsPerPage &&
+              Array.from({ length: Math.ceil(data.totalElements/ itemsPerPage) }).map((_, index) => (
+                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                  <a onClick={() => paginate(index + 1)} href="javascript:void(0)">
+                    {index + 1}
+                  </a>
+                </li>
+              ))}
+          </ul>
+          </div>
         </div>
       </div>
     </>
